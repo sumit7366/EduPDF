@@ -43,7 +43,7 @@ A comprehensive Flask-based web application for managing and distributing educat
 
 ```bash
 # If using git
-git clone <repository-url>
+git clone (https://github.com/sumit7366/EduPDF.git/)>
 cd pdf_website
 ```
 

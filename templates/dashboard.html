@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <h2>Available Subjects</h2>
+    <div class="subjects-grid">
+        {% for subject in subjects %}
+        <div class="subject-card">
+            <h3>{{ subject[1] }}</h3>
+            <p>Year: {{ subject[2] }}</p>
+            <a href="{{ url_for('subject_pdfs', subject_id=subject[0]) }}" class="btn btn-primary">View PDFs</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

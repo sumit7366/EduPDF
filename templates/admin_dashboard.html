@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h2><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+        <p>Welcome to the administration panel</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ user_count }}</h3>
+                <p>Active Users</p>
+                <small>Total: {{ total_users }}</small>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ subject_count }}</h3>
+                <p>Subjects</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ pdf_count }}</h3>
+                <p>PDF Files</p>
+                <small>Total: {{ total_pdfs }}</small>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-newspaper"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ news_count }}</h3>
+                <p>News Items</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-buttons">
+            <a href="{{ url_for('upload_pdf') }}" class="action-btn">
+                <i class="fas fa-upload"></i>
+                <span>Upload PDF</span>
+            </a>
+            <a href="{{ url_for('add_news') }}" class="action-btn">
+                <i class="fas fa-plus"></i>
+                <span>Add News</span>
+            </a>
+            <a href="{{ url_for('manage_users') }}" class="action-btn">
+                <i class="fas fa-users-cog"></i>
+                <span>Manage Users</span>
+            </a>
+            <a href="{{ url_for('manage_pdfs') }}" class="action-btn">
+                <i class="fas fa-file-pdf"></i>
+                <span>Manage PDFs</span>
+            </a>
+            <a href="{{ url_for('manage_subjects') }}" class="action-btn">
+                <i class="fas fa-book"></i>
+                <span>Manage Subjects</span>
+            </a>
+            <a href="{{ url_for('manage_news') }}" class="action-btn">
+                <i class="fas fa-newspaper"></i>
+                <span>Manage News</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="activity-grid">
+        <!-- Recent Users -->
+        <div class="activity-card">
+            <div class="activity-header">
+                <h4><i class="fas fa-user-plus"></i> Recent Users</h4>
+                <a href="{{ url_for('manage_users') }}" class="view-all">View All</a>
+            </div>
+            <div class="activity-list">
+                {% for user in recent_users %}
+                <div class="activity-item">
+                    <div class="activity-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="activity-details">
+                        <strong>{{ user.username }}</strong>
+                        <span>{{ user.email }}</span>
+                        <small>{{ user.created_at[:16] }}</small>
+                    </div>
+                    <div class="activity-badge {% if user.is_google_user %}google-badge{% else %}email-badge{% endif %}">
+                        <i class="{% if user.is_google_user %}fab fa-google{% else %}fas fa-envelope{% endif %}"></i>
+                    </div>
+                </div>
+                {% else %}
+                <div class="empty-activity">
+                    <p>No recent users</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent PDFs -->
+        <div class="activity-card">
+            <div class="activity-header">
+                <h4><i class="fas fa-file-upload"></i> Recent PDFs</h4>
+                <a href="{{ url_for('manage_pdfs') }}" class="view-all">View All</a>
+            </div>
+            <div class="activity-list">
+                {% for upload in recent_uploads %}
+                <div class="activity-item">
+                    <div class="activity-avatar">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="activity-details">
+                        <strong>{{ upload.original_filename }}</strong>
+                        <span>{{ upload.subject_name }}</span>
+                        <small>{{ upload.upload_date[:16] }}</small>
+                    </div>
+                </div>
+                {% else %}
+                <div class="empty-activity">
+                    <p>No recent uploads</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent News -->
+        <div class="activity-card">
+            <div class="activity-header">
+                <h4><i class="fas fa-bullhorn"></i> Recent News</h4>
+                <a href="{{ url_for('manage_news') }}" class="view-all">View All</a>
+            </div>
+            <div class="activity-list">
+                {% for news in recent_news %}
+                <div class="activity-item">
+                    <div class="activity-avatar">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <div class="activity-details">
+                        <strong>{{ news.title }}</strong>
+                        <span>By {{ news.author }}</span>
+                        <small>{{ news.created_at[:16] }}</small>
+                    </div>
+                </div>
+                {% else %}
+                <div class="empty-activity">
+                    <p>No recent news</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.admin-header h2 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+}
+
+.admin-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+.stat-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stat-info h3 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.stat-info p {
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.stat-info small {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.quick-actions {
+    margin-bottom: 3rem;
+}
+
+.quick-actions h3 {
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.action-btn {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow);
+}
+
+.action-btn i {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.action-btn span {
+    font-weight: 600;
+}
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.activity-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.activity-header h4 {
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.view-all {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.view-all:hover {
+    text-decoration: underline;
+}
+
+.activity-list {
+    padding: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.activity-item:hover {
+    background: var(--surface-color);
+}
+
+.activity-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-details strong {
+    display: block;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.activity-details span {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.activity-details small {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.activity-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.google-badge {
+    background: #db4437;
+    color: white;
+}
+
+.email-badge {
+    background: var(--surface-color);
+    color: var(--text-secondary);
+}
+
+.empty-activity {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .activity-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .activity-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

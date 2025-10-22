@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h2><i class="fas fa-edit"></i> Edit News</h2>
+        <p>Update the news item</p>
+    </div>
+
+    <form method="POST" class="news-form">
+        <div class="form-group">
+            <label for="title">News Title *</label>
+            <input type="text" id="title" name="title" value="{{ news_item.title }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="content">News Content *</label>
+            <textarea id="content" name="content" rows="5" required>{{ news_item.content }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="is_active" value="true" {% if news_item.is_active %}checked{% endif %}>
+                <span class="checkmark"></span>
+                Activate this news
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Update News
+            </button>
+            <a href="{{ url_for('manage_news') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

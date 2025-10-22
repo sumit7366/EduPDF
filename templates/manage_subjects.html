@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <h2>Manage Subjects</h2>
+    
+    <div class="admin-actions">
+        <a href="{{ url_for('upload_pdf') }}" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Upload New PDF
+        </a>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="subjects-list">
+        {% for subject in subjects %}
+        <div class="subject-admin-card">
+            <div class="subject-info">
+                <h3>{{ subject.name }}</h3>
+                <p class="subject-year">Year: {{ subject.year }}</p>
+                <p class="pdf-count">PDFs: {{ subject.pdf_count }}</p>
+            </div>
+            <div class="subject-actions">
+                <a href="{{ url_for('subject_pdfs', subject_id=subject.id) }}" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> View PDFs
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.subjects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.subject-admin-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.subject-admin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.subject-info h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.subject-year, .pdf-count {
+    color: var(--text-secondary);
+    margin: 0.25rem 0;
+}
+
+.subject-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .subject-admin-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .subject-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+</style>
+{% endblock %}

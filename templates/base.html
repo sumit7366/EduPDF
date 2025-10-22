@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPDF - Digital Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="background">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="sunlight"></div>
+        <div class="clouds"></div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>EduPDF</span>
+                </div>
+            </div>
+
+            <!-- News Ticker -->
+            <div class="news-ticker">
+                <div class="ticker-container">
+                    <span class="ticker-label"><i class="fas fa-bullhorn"></i> Updates:</span>
+                    <div class="ticker-content">
+                        {% for news in news_updates %}
+                        <span class="ticker-item">{{ news }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+                <div class="nav-links">
+                    {% if session.user_id %}
+                    <div class="user-welcome">
+                        <i class="fas fa-user"></i>
+                        <span>{{ session.username }}</span>
+                    </div>
+                    <a href="{{ url_for('dashboard') }}" class="nav-link">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a>
+                    <!-- {% if session.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+                        <i class="fas fa-cog"></i> Admin
+                    </a> -->
+                    {% if session.user_id and session.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="nav-link">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                    {% endif %}
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" class="nav-link logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i> User Login
+                    </a>
+                    <a href="{{ url_for('register') }}" class="nav-link register">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>EduPDF</span>
+                </div>
+                <p class="footer-description">
+                    Your digital learning companion. Access study materials anytime, anywhere.
+                </p>
+                <div class="theme-toggle-footer">
+                    <button class="theme-toggle-small" id="themeToggleFooter">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('about') }}">About</a>
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    {% if not session.user_id %}
+                    <!-- <a href="{{ url_for('login') }}">Admin Login</a> -->
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="https://github.com/sumit7366" target="_blank" class="social-link github">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                    <a href="https://www.linkedin.com/in/sumit7366/" target="_blank" class="social-link linkedin">
+                        <i class="fab fa-linkedin"></i>
+                        LinkedIn
+                    </a>
+                    <a href="https://instagram.com/9._sumit" target="_blank" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                        Instagram
+                    </a>
+                    <!-- <a href="https://twitter.com" target="_blank" class="social-link twitter">
+                        <i class="fab fa-twitter"></i>
+                        Twitter
+                    </a>
+                    <a href="https://facebook.com" target="_blank" class="social-link facebook">
+                        <i class="fab fa-facebook"></i>
+                        Facebook
+                    </a> -->
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Student Gallery</h4>
+                <div class="student-gallery">
+                    <div class="student-card">
+                        <div class="student-avatar">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <span>Computer Science</span>
+                    </div>
+                    <div class="student-card">
+                        <div class="student-avatar">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <span>Physics</span>
+                    </div>
+                    <div class="student-card">
+                        <div class="student-avatar">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <span>Mathematics</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <a href="{{ url_for('login') }}"
+                style="text-decoration: none; font-size: 18px; margin-right: 10px;">&copy;</a>
+            {{ year }} EduPDF Learning Platform. All rights reserved. | Made with <i class="fas fa-heart"></i> for
+            students
+        </div>
+
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

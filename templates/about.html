@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-container">
+    <div class="about-header">
+        <h1>About EduPDF</h1>
+        <p>Your Digital Learning Companion</p>
+    </div>
+    
+    <div class="about-content">
+        <div class="about-section">
+            <h2>Our Mission</h2>
+            <p>EduPDF is dedicated to providing students and educators with easy access to educational materials. We believe that knowledge should be accessible to everyone, everywhere.</p>
+        </div>
+        
+        <div class="about-section">
+            <h2>Features</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <h3>Easy Access</h3>
+                    <p>Download study materials with one click</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access your PDFs on any device</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Platform</h3>
+                    <p>Your data is safe with us</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.about-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.about-header h1 {
+    font-size: 3rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.about-header p {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+}
+
+.about-section {
+    margin-bottom: 3rem;
+}
+
+.about-section h2 {
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.about-section p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.features-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature-item {
+    text-align: center;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.feature-item i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.feature-item h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.feature-item p {
+    color: var(--text-secondary);
+}
+</style>
+{% endblock %}

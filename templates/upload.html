@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h2><i class="fas fa-upload"></i> Upload PDF</h2>
+        <p>Add new study materials to the library</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="upload-form">
+        <div class="form-group">
+            <label for="subject_id">Subject *</label>
+            <select id="subject_id" name="subject_id" required>
+                <option value="">Select a subject</option>
+                {% for subject in subjects %}
+                <option value="{{ subject.id }}">{{ subject.name }} ({{ subject.year }})</option>
+                {% endfor %}
+            </select>
+            <small class="form-help">Choose the subject this PDF belongs to</small>
+        </div>
+
+        <div class="form-group">
+            <label for="pdf_file">PDF File *</label>
+            <div class="file-upload">
+                <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required>
+                <label for="pdf_file" class="file-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Choose PDF File</span>
+                </label>
+            </div>
+            <small class="form-help">Only PDF files are allowed (Max: 16MB)</small>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description (Optional)</label>
+            <textarea id="description" name="description" rows="3" 
+                      placeholder="Enter a brief description of this PDF..."></textarea>
+            <small class="form-help">This will help users understand the content</small>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-upload"></i> Upload PDF
+            </button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-header h2 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.form-header p {
+    color: var(--text-secondary);
+}
+
+.upload-form {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--surface-color);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.file-upload {
+    position: relative;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border: 2px dashed var(--border-color);
+    border-radius: 10px;
+    background: var(--surface-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.file-label:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.file-label i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-help {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .upload-form {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+document.getElementById('pdf_file').addEventListener('change', function(e) {
+    const fileLabel = document.querySelector('.file-label');
+    const fileName = this.files[0] ? this.files[0].name : 'Choose PDF File';
+    
+    fileLabel.innerHTML = `
+        <i class="fas fa-file-pdf"></i>
+        <span>${fileName}</span>
+        <small>Click to change file</small>
+    `;
+});
+</script>
+{% endblock %}

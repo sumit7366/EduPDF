@@ -2,9 +2,9 @@
 
 #    Run Live --------------
 
-```bash
+
 https://sumit736600.pythonanywhere.com/
-```
+
 
 A comprehensive Flask-based web application for managing and distributing educational PDF materials. This platform supports user registration, PDF management, news updates, and administrative controls with both email and Google authentication.
 
